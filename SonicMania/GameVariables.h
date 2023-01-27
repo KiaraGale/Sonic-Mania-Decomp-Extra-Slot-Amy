@@ -44,12 +44,15 @@ typedef enum { ITEMS_FIXED, ITEMS_RANDOM, ITEMS_TELEPORT } ItemModes;
 
 typedef enum {
     MEDAL_DEBUGMODE   = 1 << 0,
-    MEDAL_AMYASSIST = 1 << 1,
+    MEDAL_AMYASSIST   = 1 << 1,
     MEDAL_PEELOUT     = 1 << 2,
     MEDAL_INSTASHIELD = 1 << 3,
     MEDAL_NODROPDASH  = 1 << 4,
 #if MANIA_USE_PLUS
-    MEDAL_NOTIMEOVER = 1 << 5,
+    MEDAL_NOTIMEOVER  = 1 << 5,
+    MEDAL_AMYGENERAL  = 1 << 6, // General Amy medal identifier
+    MEDAL_AMYCDR      = 1 << 7, // Sonic CD Restored Amy moveset; complete
+    MEDAL_AMYADVANCE  = 1 << 8, // Sonic Advance Amy moveset; wip
 #endif
 } MedalMods;
 

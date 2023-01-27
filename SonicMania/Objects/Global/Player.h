@@ -586,9 +586,11 @@ void Player_Action_Jump(EntityPlayer *entity);
 void Player_Action_Roll(void);
 void Player_Action_Spindash(void);
 void Player_Action_Peelout(void);
+#if MANIA_USE_PLUS
 void Player_Action_HammerWhack(void);
 void Player_Action_TallJump(void);
-#if MANIA_USE_PLUS
+void Player_Action_TallJump_Part2(void);
+void Player_Action_TallJump_Part3(void);
 bool32 Player_SwapMainPlayer(bool32 forceSwap);
 #endif
 void Player_HandleRollDeceleration(void);
@@ -608,6 +610,7 @@ void Player_State_TubeAirRoll(void);
 void Player_State_LookUp(void);
 void Player_State_Crouch(void);
 void Player_State_Spindash(void);
+void Player_State_Spindash_CD(void);
 void Player_State_Peelout(void);
 void Player_State_OuttaHere(void);
 void Player_State_Transform(void);
@@ -656,6 +659,7 @@ void Player_JumpAbility_Knux(void);
 void Player_JumpAbility_Mighty(void);
 void Player_JumpAbility_Ray(void);
 void Player_JumpAbility_Amy(void);
+void Player_JumpAbility_Amy_CDR(void);
 
 bool32 Player_SfxCheck_RayDive(void);
 bool32 Player_SfxCheck_RaySwoop(void);

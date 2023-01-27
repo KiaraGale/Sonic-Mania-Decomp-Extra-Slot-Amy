@@ -3544,11 +3544,22 @@ void Player_Action_Spindash(void)
     dust->state     = Dust_State_SpinDash;
     dust->drawGroup = self->drawGroup;
 
-    RSDK.SetSpriteAnimation(self->aniFrames, ANI_SPINDASH, &self->animator, true, 0);
-    self->state          = Player_State_Spindash;
-    self->abilityTimer   = 0;
-    self->spindashCharge = 0;
-    RSDK.PlaySfx(Player->sfxCharge, false, 255);
+    if (self->characterID == ID_AMY) {
+        if (globals->medalMods & MEDAL_AMYCDR) {
+            RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, true, 0);
+            self->state          = Player_State_Spindash_CD;
+            self->abilityTimer   = 0;
+            self->spindashCharge = 0;
+            RSDK.PlaySfx(Player->sfxCharge, false, 255);
+        }
+    }
+    else {
+        RSDK.SetSpriteAnimation(self->aniFrames, ANI_SPINDASH, &self->animator, true, 0);
+        self->state          = Player_State_Spindash;
+        self->abilityTimer   = 0;
+        self->spindashCharge = 0;
+        RSDK.PlaySfx(Player->sfxCharge, false, 255);
+    }
 }
 void Player_Action_Peelout(void)
 {
@@ -3566,37 +3577,53 @@ void Player_Action_HammerWhack(void)
 {
     RSDK_THIS(Player);
 
-    self->state          = Player_State_AmyHammer;
-    self->abilityTimer   = 0;
-    self->spindashCharge = 0;
-    RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
+    if (globals->medalMods & MEDAL_AMYCDR) {
+        // do nothing
+    }
+    else {
+        self->state          = Player_State_AmyHammer;
+        self->abilityTimer   = 0;
+        self->spindashCharge = 0;
+        RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
+    }
 }
 
 void Player_Action_TallJump(void)
 {
     RSDK_THIS(Player);
 
-    self->controlLock = 0;
-    self->onGround    = false;
+    if (globals->medalMods & MEDAL_AMYCDR) {
+        // do nothing
+    }
+    else {
+        self->controlLock = 0;
+        if (self->collisionMode == CMODE_FLOOR && self->state != Player_State_Roll)
+            self->position.y += self->jumpOffset;
 
-    if (self->collisionMode == CMODE_FLOOR && self->state != Player_State_Roll)
-        self->position.y += self->jumpOffset;
+        int32 jumpFrame = self->animator.frameID;
+        RSDK.SetSpriteAnimation(self->aniFrames, 49, &self->animator, true, 6);
+        self->animator.speed = 10;
+
+        if (jumpFrame == 6) {
+            RSDK.SetSpriteAnimation(self->aniFrames, 50, &self->animator, true, 0);
+            self->animator.speed = 100;
+            self->state          = Player_Action_TallJump_Part2;
+        }
+    }
+}
+
+void Player_Action_TallJump_Part2(void) {
+    RSDK_THIS(Player);
+
+    self->onGround   = false;
+    self->controlLock = 0;
 
     int32 jumpForce  = self->gravityStrength + self->jumpStrength;
     self->velocity.x = (self->groundVel * RSDK.Cos256(self->angle) + jumpForce * RSDK.Sin256(self->angle)) >> 8;
     self->velocity.y = ((self->groundVel * RSDK.Sin256(self->angle) - jumpForce * RSDK.Cos256(self->angle)) >> 8) * 1.6;
-
-    if (self->camera) {
-        self->camera->disableYOffset = true;
-        self->camera->offset.y       = 0x200000;
-    }
-
-    self->timer = 0;
-    RSDK.SetSpriteAnimation(self->aniFrames, 50, &self->animator, false, 0);
-    self->animator.speed = 100;
-
-    if (self->animator.speed > 0xF0)
-        self->animator.speed = 0xF0;
+    RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
+    self->animator.speed = 64;
+    self->state          = Player_State_Air;
 
     self->angle            = 0;
     self->collisionMode    = CMODE_FLOOR;
@@ -3604,11 +3631,21 @@ void Player_Action_TallJump(void)
     self->applyJumpCap     = true;
     self->jumpAbilityState = 1;
 
-    RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
-    RSDK.SetSpriteAnimation(self->aniFrames, 51, &self->animator, false, 0);
-    self->animator.speed = 64;
-    self->state          = Player_State_Air;
+    int32 jumpFrame = self->animator.frameID;
+    if (jumpFrame == 8) {
+        RSDK.SetSpriteAnimation(self->aniFrames, 51, &self->animator, true, 0);
+        self->animator.speed = 64;
+        self->state = Player_Action_TallJump_Part3;
+    }
 }
+
+void Player_Action_TallJump_Part3(void) { 
+    RSDK_THIS(Player);
+
+    RSDK.SetSpriteAnimation(self->aniFrames, 51, &self->animator, true, 0);
+    self->state = Player_State_Air;
+}
+
 #if MANIA_USE_PLUS
 bool32 Player_SwapMainPlayer(bool32 forceSwap)
 {
@@ -5987,6 +6024,7 @@ void Player_State_AmyHammer(void)
 {
     RSDK_THIS(Player);
 
+    int32 jumpFrame = self->animator.frameID;
     if (self->bPress && (self->onGround = 1) && HammerHitting == false) {
         bool32 HammerHitting = true;
         RSDK.SetSpriteAnimation(self->aniFrames, 49, &self->animator, false, 0);
@@ -5995,17 +6033,112 @@ void Player_State_AmyHammer(void)
             self->abilitySpeed = 25000;
             self->velocity.x   = 25000;
         }
-        else
+        else {
             self->abilitySpeed = -25000;
-        self->velocity.x = -25000;
+            self->velocity.x   = -25000;
+        }
 
-        if (self->animator.frameID == 10) {
+        if (jumpFrame == 10) {
             RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
         }
+
+        if (jumpFrame == 12)
+            self->state = Player_State_Ground;
+    }
+}
+
+void Player_JumpAbility_Amy_CDR(void)
+{ 
+    RSDK_THIS(Player);
+
+    self->controlLock = 0;
+    bool32 dJump      = self->jumpAbilityState;
+
+    if (dJump == 1 && self->jumpPress) {
+        int32 jumpForce        = self->gravityStrength + self->jumpStrength;
+        self->velocity.x       = (self->groundVel * RSDK.Cos256(self->angle) + jumpForce * RSDK.Sin256(self->angle)) >> 8;
+        self->velocity.y       = ((self->groundVel * RSDK.Sin256(self->angle) - jumpForce * RSDK.Cos256(self->angle)) >> 8) * 0.5;
+        self->jumpAbilityState = 0;
+
+        RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
+        self->animator.speed = ((abs(self->groundVel) * 0xF0) / 0x60000) + 0x30;
+
+        if (self->animator.speed > 0xF0)
+            self->animator.speed = 0xF0;
+
+        self->angle        = 0;
+        self->skidding     = 0;
+        self->applyJumpCap = true;
+
+        RSDK.PlaySfx(Player->sfxJump, false, 255);
+        self->state = Player_State_Air;
+    }
+#if GAME_VERSION != VER_100
+    else if (ControllerInfo[self->controllerID].keyY.press)
+        Player_TryTransform(self, SaveGame_GetSaveRAM()->collectedEmeralds);
+#endif
+}
+
+void Player_State_Spindash_CD(void)
+{
+    RSDK_THIS(Player);
+
+    float chargeTimes[13]       = { 2.46f, 4.92f, 7.38f, 9.84f, 12.30f, 14.76f, 17.22f, 19.68f, 22.14f, 24.60f, 27.06f, 29.52f, 31.98f };
+    int32 averageSpeedperCharge = 0x7943;
+    int32 frameToSpeedRatio     = 0x2813;
+    // ^^ written-down calculations. does nothing; exists only for future reference ^^
+
+    float chargeSpeeds[32] = { 0.0625000f, 0.1250000f, 0.1875000f, 0.2500000f, 0.3125000f, 0.3750000f, 0.4375000f, 0.5000000f,
+                               0.5625000f, 0.6250000f, 0.6875000f, 0.7500000f, 0.8125000f, 0.8750000f, 0.9375000f, 1.0000000f,
+                               1.0625000f, 1.1250000f, 1.1875000f, 1.2500000f, 1.3125000f, 1.3750000f, 1.4375000f, 1.5000000f,
+                               1.5625000f, 1.6250000f, 1.6875000f, 1.7500000f, 1.8125000f, 1.8750000f, 1.9375000f, 2.0000000f };
+
+    int32 channel = RSDK.PlaySfx(Player->sfxCharge, false, 255);
+    RSDK.SetChannelAttributes(channel, 1.0, 0.0, chargeSpeeds[self->spindashCharge]);
+    self->timer = 0;
+
+    if (self->abilityTimer < 0x112520)
+        self->abilityTimer += 0x3516; // 1.599715606114469
+
+    if (self->spindashCharge > 32) {
+        self->spindashCharge = 32;
+        RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
+        self->animator.speed = 120;
     }
 
-    if (self->animator.frameID == 12)
-        self->state = Player_State_Ground;
+    if (self->spindashCharge < 0)
+        self->spindashCharge = 0;
+
+    if (!self->down) {
+        RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
+
+        if (self->camera && !Zone->autoScrollSpeed) {
+            self->scrollDelay   = 15;
+            self->camera->state = Camera_State_FollowY;
+        }
+
+        int32 vel = 0;
+        if (self->superState == SUPERSTATE_SUPER)
+            vel = (((uint32)self->abilityTimer >> 1) & 0x7FFF8000) + 0x6E050;
+        else
+            vel = (((uint32)self->abilityTimer >> 1) & 0x7FFF8000) + 0x31994;
+
+        if (self->direction != FLIP_NONE)
+            self->groundVel = -vel;
+        else
+            self->groundVel = vel;
+
+        RSDK.StopSfx(Player->sfxCharge);
+        RSDK.PlaySfx(Player->sfxRelease, false, 0xFF);
+
+        RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
+
+        if (!self->collisionMode)
+            self->position.y += self->jumpOffset;
+
+        self->pushing = 0;
+        self->state   = Player_State_Roll;
+    }
 }
 #endif
 void Player_State_FlyToPlayer(void)
@@ -6860,13 +6993,13 @@ void Player_JumpAbility_Amy(void)
         if (self->aPress && self->jumpAbilityState == 1
             && (self->stateInput != Player_Input_P2_AI
                 || (self->up
-    #if MANIA_USE_PLUS
+#if MANIA_USE_PLUS
                     && globals->gameMode != MODE_ENCORE
-    #endif
+#endif
                     ))
-    #if GAME_VERSION == VER_100
+#if GAME_VERSION == VER_100
             && !Player_TryTransform(self, SaveGame->saveRAM->chaosEmeralds)
-    #endif
+#endif
         ) {
             if (!self->invertGravity) {
                 self->jumpAbilityState = 0;
@@ -6914,12 +7047,12 @@ void Player_JumpAbility_Amy(void)
                 if (self->direction) {
                     self->state      = Player_State_AmyHeliHammer_Left;
                     self->velocity.x = (self->velocity.x - 0x15000);
-                    self->timer = 0x100;
+                    self->timer      = 0x100;
                 }
                 else {
                     self->state      = Player_State_AmyHeliHammer_Right;
                     self->velocity.x = (self->velocity.x + 0x15000);
-                    self->timer = 0;
+                    self->timer      = 0x100;
                 }
 
                 self->nextGroundState = StateMachine_None;
@@ -6928,8 +7061,8 @@ void Player_JumpAbility_Amy(void)
             }
         }
 #if GAME_VERSION != VER_100
-    else if (ControllerInfo[self->controllerID].keyY.press)
-        Player_TryTransform(self, SaveGame->saveRAM->collectedEmeralds);
+        else if (ControllerInfo[self->controllerID].keyY.press)
+            Player_TryTransform(self, SaveGame->saveRAM->collectedEmeralds);
 #endif
     }
 }

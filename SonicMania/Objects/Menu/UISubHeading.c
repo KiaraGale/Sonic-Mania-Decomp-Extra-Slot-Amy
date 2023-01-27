@@ -159,20 +159,33 @@ void UISubHeading_SetupActions(void)
 
 void UISubHeading_HandleMenuReturn(int32 slot)
 {
+    RSDK_THIS(UISaveSlot);
+
     EntityUIControl *control = ManiaModeMenu->secretsMenu;
     SaveRAM *saveGame        = (SaveRAM *)SaveGame_GetDataPtr(slot, false);
+    int32 playerID           = self->frameID;
 
     UIButton_SetChoiceSelection(control->buttons[0], (saveGame->medalMods & MEDAL_NOTIMEOVER) != 0);
     UIButton_SetChoiceSelection(control->buttons[1], (saveGame->medalMods & MEDAL_AMYASSIST) != 0);
 
-    if (saveGame->medalMods & MEDAL_NODROPDASH) {
-        if (saveGame->medalMods & MEDAL_PEELOUT)
-            UIButton_SetChoiceSelection(control->buttons[2], 1);
-        else if (saveGame->medalMods & MEDAL_INSTASHIELD)
-            UIButton_SetChoiceSelection(control->buttons[2], 2);
+    if (playerID == 6) {
+        if (saveGame->medalMods & MEDAL_AMYGENERAL) {
+            if (saveGame->medalMods & MEDAL_AMYCDR)
+                UIButton_SetChoiceSelection(control->buttons[2], 1);
+            else if (saveGame->medalMods & MEDAL_AMYADVANCE)
+                UIButton_SetChoiceSelection(control->buttons[2], 2);
+        }
     }
     else {
-        UIButton_SetChoiceSelection(control->buttons[2], 0);
+        if (saveGame->medalMods & MEDAL_NODROPDASH) {
+            if (saveGame->medalMods & MEDAL_PEELOUT)
+                UIButton_SetChoiceSelection(control->buttons[2], 1);
+            else if (saveGame->medalMods & MEDAL_INSTASHIELD)
+                UIButton_SetChoiceSelection(control->buttons[2], 2);
+        }
+        else {
+            UIButton_SetChoiceSelection(control->buttons[2], 0);
+        }
     }
 
     if (saveGame->medalMods & MEDAL_AMYASSIST)
@@ -183,7 +196,10 @@ void UISubHeading_HandleMenuReturn(int32 slot)
 
 int32 UISubHeading_GetMedalMods(void)
 {
+    RSDK_THIS(UISaveSlot);
+
     EntityUIControl *control = ManiaModeMenu->secretsMenu;
+    int32 playerID           = self->frameID;
 
     int32 mods = 0;
     if (control->buttons[0]->selection == 1)
@@ -192,13 +208,23 @@ int32 UISubHeading_GetMedalMods(void)
     if (control->buttons[1]->selection == 1)
         mods |= MEDAL_DEBUGMODE;
 
-    if (control->buttons[2]->selection == 1) {
-        mods |= MEDAL_NODROPDASH;
-        mods |= MEDAL_PEELOUT;
+    if (playerID == 6) {
+        if (control->buttons[2]->selection == 1) {
+            mods |= MEDAL_AMYCDR;
+        }
+        else if (control->buttons[2]->selection == 2) {
+            mods |= MEDAL_AMYADVANCE;
+        }
     }
-    else if (control->buttons[2]->selection == 2) {
-        mods |= MEDAL_NODROPDASH;
-        mods |= MEDAL_INSTASHIELD;
+    else {
+        if (control->buttons[2]->selection == 1) {
+            mods |= MEDAL_NODROPDASH;
+            mods |= MEDAL_PEELOUT;
+        }
+        else if (control->buttons[2]->selection == 2) {
+            mods |= MEDAL_NODROPDASH;
+            mods |= MEDAL_INSTASHIELD;
+        }
     }
 
     if (control->buttons[3]->selection == 1)
