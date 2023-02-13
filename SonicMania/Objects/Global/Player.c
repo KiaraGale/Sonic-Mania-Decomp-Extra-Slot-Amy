@@ -6012,9 +6012,11 @@ void Player_State_AmyHammer(void)
             RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
         }
     }
+    
     if (!RSDK.IsSfxPlaying(Player->sfxAmyHammer)) {
         RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
     }
+    Player_HandleGroundRotation();
     if (self->animator.frameID == 12)
         self->state = Player_State_Ground;
 }
