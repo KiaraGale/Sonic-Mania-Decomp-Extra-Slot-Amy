@@ -10,7 +10,7 @@
 ObjectTimeAttackData *TimeAttackData;
 
 #if MANIA_USE_PLUS
-static const char *playerNames[] = { "Invalid", "Sonic", "Tails", "Knuckles", "Mighty", "Ray" };
+static const char *playerNames[] = { "Invalid", "Sonic", "Tails", "Knuckles", "Mighty", "Ray", "Amy" };
 static const char *actNames[]    = { "Act 1", "Act 2", "Act 3", "" };
 static const char *zoneNames[]   = { "GHZ", "CPZ", "SPZ", "FBZ", "PGZ", "SSZ", "HCZ", "MSZ", "OOZ", "LRZ", "MMZ", "TMZ", "ERZ", "AIZ" };
 static const char *modeNames[]   = { "Mania", "Encore" };
@@ -258,6 +258,57 @@ static LeaderboardID leaderboardInfo[] = {
     { .idPS4 = 237, .idUnknown = 234, .idSwitch = 304, .idXbox = "PlusTMZ2KnucklesEncore",  .idPC = "TMZ2_K_ENCORE" },
     { .idPS4 = 238, .idUnknown = 235, .idSwitch = 305, .idXbox = "PlusTMZ2MightyEncore",    .idPC = "TMZ2_M_ENCORE" },
     { .idPS4 = 239, .idUnknown = 236, .idSwitch = 306, .idXbox = "PlusTMZ2RayEncore",       .idPC = "TMZ2_R_ENCORE" },
+
+    // ESA-TA stuff, I doubt this will work though
+    { .idPS4 = 240, .idUnknown = 237, .idSwitch = 307, .idXbox = "PlusGHZ1AmyMania", .idPC = "GHZ1_A_MANIA" },
+    { .idPS4 = 241, .idUnknown = 238, .idSwitch = 308, .idXbox = "PlusGHZ2AmyMania", .idPC = "GHZ2_A_MANIA" },
+    { .idPS4 = 242, .idUnknown = 239, .idSwitch = 309, .idXbox = "PlusCPZ1AmyMania", .idPC = "CPZ1_A_MANIA" },
+    { .idPS4 = 243, .idUnknown = 240, .idSwitch = 310, .idXbox = "PlusCPZ2AmyMania", .idPC = "CPZ2_A_MANIA" },
+    { .idPS4 = 244, .idUnknown = 241, .idSwitch = 311, .idXbox = "PlusSPZ1AmyMania", .idPC = "SPZ1_A_MANIA" },
+    { .idPS4 = 245, .idUnknown = 242, .idSwitch = 312, .idXbox = "PlusSPZ2AmyMania", .idPC = "SPZ2_A_MANIA" },
+    { .idPS4 = 246, .idUnknown = 243, .idSwitch = 313, .idXbox = "PlusFBZ1AmyMania", .idPC = "FBZ1_A_MANIA" },
+    { .idPS4 = 247, .idUnknown = 244, .idSwitch = 314, .idXbox = "PlusFBZ2AmyMania", .idPC = "FBZ2_A_MANIA" },
+    { .idPS4 = 248, .idUnknown = 245, .idSwitch = 315, .idXbox = "PlusPGZ1AmyMania", .idPC = "PGZ1_A_MANIA" },
+    { .idPS4 = 249, .idUnknown = 246, .idSwitch = 316, .idXbox = "PlusPGZ2AmyMania", .idPC = "PGZ2_A_MANIA" },
+    { .idPS4 = 250, .idUnknown = 247, .idSwitch = 317, .idXbox = "PlusSSZ1AmyMania", .idPC = "SSZ1_A_MANIA" },
+    { .idPS4 = 251, .idUnknown = 248, .idSwitch = 318, .idXbox = "PlusSSZ2AmyMania", .idPC = "SSZ2_A_MANIA" },
+    { .idPS4 = 252, .idUnknown = 249, .idSwitch = 319, .idXbox = "PlusHCZ1AmyMania", .idPC = "HCZ1_A_MANIA" },
+    { .idPS4 = 253, .idUnknown = 250, .idSwitch = 320, .idXbox = "PlusHCZ2AmyMania", .idPC = "HCZ2_A_MANIA" },
+    { .idPS4 = -1,  .idUnknown = -1,  .idSwitch = -1,  .idXbox = NULL,               .idPC = NULL },
+    { .idPS4 = 254, .idUnknown = 251, .idSwitch = 321, .idXbox = "PlusMSZ2AmyMania", .idPC = "MSZ2_A_MANIA" },
+    { .idPS4 = 255, .idUnknown = 252, .idSwitch = 322, .idXbox = "PlusOOZ1AmyMania", .idPC = "OOZ1_A_MANIA" },
+    { .idPS4 = 256, .idUnknown = 253, .idSwitch = 323, .idXbox = "PlusOOZ2AmyMania", .idPC = "OOZ2_A_MANIA" },
+    { .idPS4 = 257, .idUnknown = 254, .idSwitch = 324, .idXbox = "PlusLRZ1AmyMania", .idPC = "LRZ1_A_MANIA" },
+    { .idPS4 = 258, .idUnknown = 255, .idSwitch = 325, .idXbox = "PlusLRZ2AmyMania", .idPC = "LRZ2_A_MANIA" },
+    { .idPS4 = 259, .idUnknown = 256, .idSwitch = 326, .idXbox = "PlusMMZ1AmyMania", .idPC = "MMZ1_A_MANIA" },
+    { .idPS4 = 260, .idUnknown = 257, .idSwitch = 327, .idXbox = "PlusMMZ2AmyMania", .idPC = "MMZ2_A_MANIA" },
+    { .idPS4 = 261, .idUnknown = 258, .idSwitch = 328, .idXbox = "PlusTMZ1AmyMania", .idPC = "TMZ1_A_MANIA" },
+    { .idPS4 = 262, .idUnknown = 259, .idSwitch = 329, .idXbox = "PlusTMZ2AmyMania", .idPC = "TMZ2_A_MANIA" },
+
+    { .idPS4 = 263, .idUnknown = 260, .idSwitch = 330, .idXbox = "PlusGHZ1AmyEncore", .idPC = "GHZ1_A_ENCORE" },
+    { .idPS4 = 264, .idUnknown = 261, .idSwitch = 331, .idXbox = "PlusGHZ2AmyEncore", .idPC = "GHZ2_A_ENCORE" },
+    { .idPS4 = 265, .idUnknown = 262, .idSwitch = 332, .idXbox = "PlusCPZ1AmyEncore", .idPC = "CPZ1_A_ENCORE" },
+    { .idPS4 = 266, .idUnknown = 263, .idSwitch = 333, .idXbox = "PlusCPZ2AmyEncore", .idPC = "CPZ2_A_ENCORE" },
+    { .idPS4 = 267, .idUnknown = 264, .idSwitch = 334, .idXbox = "PlusSPZ1AmyEncore", .idPC = "SPZ1_A_ENCORE" },
+    { .idPS4 = 268, .idUnknown = 265, .idSwitch = 335, .idXbox = "PlusSPZ2AmyEncore", .idPC = "SPZ2_A_ENCORE" },
+    { .idPS4 = 269, .idUnknown = 266, .idSwitch = 336, .idXbox = "PlusFBZ1AmyEncore", .idPC = "FBZ1_A_ENCORE" },
+    { .idPS4 = 270, .idUnknown = 267, .idSwitch = 337, .idXbox = "PlusFBZ2AmyEncore", .idPC = "FBZ2_A_ENCORE" },
+    { .idPS4 = 271, .idUnknown = 268, .idSwitch = 338, .idXbox = "PlusPGZ1AmyEncore", .idPC = "PGZ1_A_ENCORE" },
+    { .idPS4 = 272, .idUnknown = 269, .idSwitch = 339, .idXbox = "PlusPGZ2AmyEncore", .idPC = "PGZ2_A_ENCORE" },
+    { .idPS4 = 273, .idUnknown = 270, .idSwitch = 340, .idXbox = "PlusSSZ1AmyEncore", .idPC = "SSZ1_A_ENCORE" },
+    { .idPS4 = 274, .idUnknown = 271, .idSwitch = 341, .idXbox = "PlusSSZ2AmyEncore", .idPC = "SSZ2_A_ENCORE" },
+    { .idPS4 = 275, .idUnknown = 272, .idSwitch = 342, .idXbox = "PlusHCZ1AmyEncore", .idPC = "HCZ1_A_ENCORE" },
+    { .idPS4 = 276, .idUnknown = 273, .idSwitch = 343, .idXbox = "PlusHCZ2AmyEncore", .idPC = "HCZ2_A_ENCORE" },
+    { .idPS4 = -1,  .idUnknown = -1,  .idSwitch = -1,  .idXbox = NULL,                .idPC = NULL },
+    { .idPS4 = 277, .idUnknown = 274, .idSwitch = 344, .idXbox = "PlusMSZ2AmyEncore", .idPC = "MSZ2_A_ENCORE" },
+    { .idPS4 = 278, .idUnknown = 275, .idSwitch = 345, .idXbox = "PlusOOZ1AmyEncore", .idPC = "OOZ1_A_ENCORE" },
+    { .idPS4 = 279, .idUnknown = 276, .idSwitch = 346, .idXbox = "PlusOOZ2AmyEncore", .idPC = "OOZ2_A_ENCORE" },
+    { .idPS4 = 280, .idUnknown = 277, .idSwitch = 347, .idXbox = "PlusLRZ1AmyEncore", .idPC = "LRZ1_A_ENCORE" },
+    { .idPS4 = 281, .idUnknown = 278, .idSwitch = 348, .idXbox = "PlusLRZ2AmyEncore", .idPC = "LRZ2_A_ENCORE" },
+    { .idPS4 = 282, .idUnknown = 279, .idSwitch = 349, .idXbox = "PlusMMZ1AmyEncore", .idPC = "MMZ1_A_ENCORE" },
+    { .idPS4 = 283, .idUnknown = 280, .idSwitch = 350, .idXbox = "PlusMMZ2AmyEncore", .idPC = "MMZ2_A_ENCORE" },
+    { .idPS4 = 284, .idUnknown = 281, .idSwitch = 351, .idXbox = "PlusTMZ1AmyEncore", .idPC = "TMZ1_A_ENCORE" },
+    { .idPS4 = 285, .idUnknown = 282, .idSwitch = 352, .idXbox = "PlusTMZ2AmyEncore", .idPC = "TMZ2_A_ENCORE" },
 };
 // clang-format on
 #endif
@@ -714,7 +765,7 @@ void TimeAttackData_AddLeaderboardEntry(uint8 zoneID, uint8 act, uint8 character
 LeaderboardID *TimeAttackData_GetLeaderboardInfo(uint8 zoneID, uint8 act, uint8 characterID, bool32 isEncore)
 {
     LeaderboardID *info = NULL;
-    if (zoneID < 12 && act < 2 && characterID <= 5) {
+    if (zoneID < 12 && act < 2 && characterID <= 6) {
         int32 id = 10 * zoneID + 5 * act + (characterID - 1);
         if (isEncore)
             id += 120;

@@ -239,7 +239,7 @@ void UIVsCharSelector_ProcessButtonCB(void)
         }
 
 #if MANIA_USE_PLUS
-        int32 max = UICHARBUTTON_KNUX + (API.CheckDLC(DLC_PLUS) ? 2 : 0);
+        int32 max = UICHARBUTTON_KNUX + (API.CheckDLC(DLC_PLUS) ? 3 : 0);
 #else
     int32 max = UICHARBUTTON_KNUX;
 #endif

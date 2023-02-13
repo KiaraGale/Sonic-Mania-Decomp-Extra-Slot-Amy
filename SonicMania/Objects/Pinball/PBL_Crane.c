@@ -124,9 +124,6 @@ void PBL_Crane_HandlePrizes(void)
             if (self->displayAnimator.frameID == PBL_CRANE_PRIZE_AMY) {
                 playerID = 1 << 5;
             }
-            if (!GET_STOCK_ID(3)) {
-                globals->characterFlags |= playerID;
-            }
             PBL_Crane->prizeID = PBL_CRANE_PRIZEID_BUDDY;
 
             if (!GET_CHARACTER_ID(1))
@@ -136,9 +133,9 @@ void PBL_Crane_HandlePrizes(void)
             else if (!GET_STOCK_ID(1))
                 globals->stock |= playerID;
             else if (!GET_STOCK_ID(2))
-                globals->stock |= playerID << 8;
+                globals->stock |= playerID << 4;
             else if (!GET_STOCK_ID(3))
-                globals->stock |= playerID << 16;
+                globals->stock |= playerID << 8;
             else if (!GET_STOCK_ID(4))
                 globals->stock |= playerID << 16;
 

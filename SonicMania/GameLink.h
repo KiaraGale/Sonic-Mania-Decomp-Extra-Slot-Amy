@@ -51,7 +51,7 @@ typedef uint32 color;
 #define SCREEN_COUNT (2)
 #endif
 
-#define PLAYER_COUNT (4)
+#define PLAYER_COUNT (5)
 #define CAMERA_COUNT (4)
 
 // 0x800 scene objects, 0x40 reserved ones, and 0x100 spare slots for creation

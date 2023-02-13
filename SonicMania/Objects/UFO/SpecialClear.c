@@ -329,7 +329,7 @@ void SpecialClear_Create(void *data)
 #if MANIA_USE_PLUS
             case ID_MIGHTY:
                 RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_MIGHTY, &self->playerNameAnimator, true, 0);
-                RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_CONTINUE, &self->continueAnimator, true, 3);
+                RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_CONTINUE, &self->continueAnimator, true, SC_ANI_MIGHTY);
                 break;
 
             case ID_RAY:
@@ -339,7 +339,7 @@ void SpecialClear_Create(void *data)
 
             case ID_AMY:
                 RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_AMY, &self->playerNameAnimator, true, 0);
-                RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_CONTINUE, &self->continueAnimator, true, SC_ANI_AMY);
+                RSDK.SetSpriteAnimation(SpecialClear->aniFrames, SC_ANI_CONTINUE, &self->continueAnimator, true, (SC_ANI_RAY) + 1);
                 break;
 #endif
         }
@@ -359,7 +359,7 @@ void SpecialClear_StageLoad(void)
     SpecialClear->sfxSpecialWarp = RSDK.GetSfx("Global/SpecialWarp.wav");
     SpecialClear->sfxContinue    = RSDK.GetSfx("Special/Continue.wav");
     SpecialClear->sfxEmerald     = RSDK.GetSfx("Special/Emerald.wav");
-    // SpecialClear->sfxTimeStone   = RSDK.GetSfx("Special/TimeStone.wav");
+    SpecialClear->sfxTimeStone   = RSDK.GetSfx("Special/TimeStone.wav");
 }
 
 void SpecialClear_DrawNumbers(Vector2 *pos, int32 value)
@@ -522,13 +522,20 @@ void SpecialClear_State_EnterBonuses(void)
 void SpecialClear_State_ScoreShownDelay(void)
 {
     RSDK_THIS(SpecialClear);
+    int32 playerID = GET_CHARACTER_ID(1);
 
     if (++self->timer == 120) {
         self->timer = 0;
         self->state = SpecialClear_State_TallyScore;
 
-        if (self->messageType != SC_MSG_SPECIALCLEAR)
-            RSDK.PlaySfx(SpecialClear->sfxEmerald, false, 0xFF);
+        if (self->messageType != SC_MSG_SPECIALCLEAR) {
+            if (playerID == ID_AMY) {
+                RSDK.PlaySfx(SpecialClear->sfxTimeStone, false, 0xFF);
+            }
+            else {
+                RSDK.PlaySfx(SpecialClear->sfxEmerald, false, 0xFF);
+            }
+        }
     }
 
     SpecialClear_HandleEmeraldAppear();

@@ -406,7 +406,7 @@ void UISaveSlot_DrawPlayerIcons(int32 drawX, int32 drawY)
     RSDK.SetSpriteAnimation(UISaveSlot->aniFrames, 2, &self->shadowsAnimator, true, 3);
 
 #if MANIA_USE_PLUS
-    uint8 friendIDs[4];//Don't think this should be 5
+    uint8 friendIDs[4];
     int32 playerID    = 0;
     int32 buddyID     = 0;
     int32 friendCount = 0;
@@ -1025,7 +1025,7 @@ void UISaveSlot_PrevCharacter(void)
     int32 player = self->frameID;
 
 #if MANIA_USE_PLUS
-    int32 max = API.CheckDLC(DLC_PLUS) ? 7 : 5; //why?
+    int32 max = API.CheckDLC(DLC_PLUS) ? 7 : 4; //why?
 #else
     int32 max = 4;
 #endif

@@ -59,7 +59,7 @@ void GlobalVariables_InitCB(GlobalVariables *globals)
     globals->replayTableID = (uint16)-1;
     globals->taTableID     = (uint16)-1;
 
-    globals->stock          = (ID_AMY << 16) | (ID_RAY << 16) | (ID_KNUCKLES << 8) | ID_TAILS;
+    globals->stock          = (ID_AMY << 8) | (ID_RAY << 6) | (ID_MIGHTY << 4) | (ID_KNUCKLES << 2) | ID_TAILS;
     globals->characterFlags = ID_SONIC | ID_TAILS | ID_KNUCKLES | ID_MIGHTY | ID_RAY | ID_AMY;
 
     globals->superMusicEnabled = true;

@@ -114,7 +114,7 @@ typedef enum {
     ANI_HAMMER_HIT  = ANI_ABILITY_0,
     ANI_SPIN_JUMP   = ANI_ABILITY_1,
     ANI_FREE_FALL   = ANI_ABILITY_2,
-    ANI_HELI_HAMMER = ANI_ABILITY_3,
+    ANI_HELI_HAMMER = 52,
 #endif
 } PlayerAnimationIDs;
 
@@ -200,8 +200,8 @@ struct ObjectPlayer {
                                            0xF0B8B8, 0xF0E0E8, 0x701010, 0xD84040, 0xF05858, 0xF07878, 0xF0B8B8, 0xF0E0E8 });
     TABLE(color superPalette_Ray[18], { 0xA06800, 0xB88810, 0xD0A810, 0xE0C020, 0xE8D038, 0xF0E078, 0xE0A801, 0xF0C820, 0xF0E820, 0xF0F040, 0xF0F068,
                                         0xF0F0B8, 0xE0A801, 0xF0C820, 0xF0E820, 0xF0F040, 0xF0F068, 0xF0F0B8 });
-    TABLE(color superPalette_Amy[18], { 0x64036E, 0x980F8C, 0xC02AAA, 0xEA51B5, 0xF678D0, 0xFABBE3, 0x008080, 0x00BDAD, 0x00F0C0, 0x09F6A7, 0x1FFF8B,
-                                        0x66FF99, 0x00802B, 0x00BD5E, 0x00F0A0, 0x0AF5C6, 0x1FFFEC, 0x67FEFE });
+    TABLE(color superPalette_Amy[18], { 0x64036E, 0x980F8C, 0xC02AAA, 0xEA51B5, 0xF678D0, 0xFABBE3, 0x00902B, 0x00BD5E, 0x15D96D, 0x15F57B, 0x1FFF8B,
+                                        0x67FE99, 0x00A7FF, 0x00BDFF, 0x1FD8FF, 0x3FEAFF, 0x51F5FF, 0x67FEFF });
     TABLE(color superPalette_Sonic_HCZ[18], { 0x200888, 0x3020C8, 0x3840F0, 0x4070F0, 0x4098F0, 0x40C0F0, 0x88C880, 0x68E090, 0x50F098, 0x68F0C0,
                                               0x78F0C8, 0xA0F0D8, 0x60E898, 0x48F0A0, 0x58F0B0, 0x68F0C0, 0x90F0D0, 0xA0F0D8 });
     TABLE(color superPalette_Tails_HCZ[18], { 0x880808, 0xA03810, 0xA05848, 0xB07058, 0xC08068, 0xC89078, 0xCC6161, 0xDC8462, 0xD5978A, 0xDEA893,
@@ -485,6 +485,7 @@ struct EntityPlayer {
     void *abilityPtrs[8];
 #if MANIA_USE_PLUS
     int32 uncurlTimer;
+    bool32 hammeractivate;
 #endif
 };
 
@@ -586,8 +587,9 @@ void Player_Action_Jump(EntityPlayer *entity);
 void Player_Action_Roll(void);
 void Player_Action_Spindash(void);
 void Player_Action_Peelout(void);
-void Player_Action_HammerWhack(void);
 void Player_Action_TallJump(void);
+void Player_Action_TallJump_Part2(EntityPlayer *player);
+void Player_Action_HammerWhack(void);
 #if MANIA_USE_PLUS
 bool32 Player_SwapMainPlayer(bool32 forceSwap);
 #endif
