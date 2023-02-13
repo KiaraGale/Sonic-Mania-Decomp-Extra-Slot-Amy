@@ -6026,6 +6026,10 @@ void Player_State_AmyHeliHammer_Left(void)
                     else
                         self->abilityValue++;
                 }
+                if (!RSDK.IsSfxPlaying(Player->sfxAmyHammerFly)) {
+                    RSDK.PlaySfx(Player->sfxAmyHammerFly, false, 255);
+                }
+                   
             }
             else {
                 RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
@@ -6083,6 +6087,10 @@ void Player_State_AmyHeliHammer_Right(void)
                     else
                         self->abilityValue++;
                 }
+                if (!RSDK.IsSfxPlaying(Player->sfxAmyHammerFly)) {
+                    RSDK.PlaySfx(Player->sfxAmyHammerFly, false, 255);
+                }
+                
             }
             else {
                 RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
@@ -6104,9 +6112,13 @@ void Player_State_AmyHammer(void)
         self->animator.speed = 10;
     }
 
-    if (hammeranim == 7) {
+    if (!RSDK.IsSfxPlaying(Player->sfxAmyHammer)) {
         RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
     }
+    Player_HandleGroundRotation();
+    
+    if (hammeranim == 7)
+        RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
 
     if (hammeranim == 12)
         self->state = Player_State_Ground;
