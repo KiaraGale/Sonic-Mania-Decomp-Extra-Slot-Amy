@@ -18,7 +18,7 @@ void ItemBox_Update(void)
 #if MANIA_USE_PLUS
     if (self->type == ITEMBOX_STOCK) {
         if (self->contentsAnimator.animationID == 2 || self->contentsAnimator.animationID == 7 || self->contentsAnimator.animationID == 8) {
-            if ((globals->characterFlags == 0x1F || GET_STOCK_ID(3)) && globals->gameMode == MODE_ENCORE) { //Prevent box from displaying last character
+            if ((globals->characterFlags == 0x1F || GET_STOCK_ID(4)) && globals->gameMode == MODE_ENCORE) {
                 RSDK.SetSpriteAnimation(ItemBox->aniFrames, 8, &self->contentsAnimator, false, 0);
             }
             else {
@@ -425,7 +425,7 @@ void ItemBox_CheckHit(void)
                 case ID_KNUCKLES: attacking |= anim == ANI_GLIDE || anim == ANI_GLIDE_SLIDE; break;
 #if MANIA_USE_PLUS
                 case ID_MIGHTY: attacking |= anim == ANI_HAMMERDROP || player->jumpAbilityState > 1; break;
-                case ID_AMY: attacking |= anim == 49 || anim == 52; break;
+                case ID_AMY: attacking |= anim == 49 || anim == 50 || anim == 52; break;
 #endif
             }
 
@@ -559,8 +559,15 @@ void ItemBox_GivePowerup(void)
 
                     if (GET_STOCK_ID(1)) {
                         charID <<= 8;
-                        if (GET_STOCK_ID(2))
+                        if (GET_STOCK_ID(2)) {
                             charID <<= 8;
+                            if (GET_STOCK_ID(3)) {
+                                charID <<= 8;
+                                if (GET_STOCK_ID(4)) {
+                                    charID <<= 8;
+                                }
+                            }
+                        }
                     }
                     globals->stock |= charID;
                     EntityExplosion *explosion = CREATE_ENTITY(Explosion, INT_TO_VOID(EXPLOSION_ENEMY), player->position.x, player->position.y);
@@ -622,7 +629,7 @@ void ItemBox_GivePowerup(void)
                                         tempStock |= 1 << newPlayerIDs[p];
                                         break;
                                     }
-                                    else if (p == 5 || playerIDs[p + 1] == 0xFF) {
+                                    else if (p == 6 || playerIDs[p + 1] == 0xFF) {
                                         int32 slot         = RSDK.Rand(0, p);
                                         int32 id           = newPlayerIDs[slot];
                                         newPlayerIDs[slot] = newPlayerIDs[p];
@@ -686,11 +693,11 @@ void ItemBox_GivePowerup(void)
         case ITEMBOX_STOCK: {
             if (self->contentsAnimator.animationID == 7) {
                 if (globals->gameMode == MODE_ENCORE) {
-                    if (!((1 << self->contentsAnimator.frameID) & globals->characterFlags) && globals->characterFlags != 0x1F && !GET_STOCK_ID(3)) {
+                    if (!((1 << self->contentsAnimator.frameID) & globals->characterFlags) && globals->characterFlags != 0x1F && !GET_STOCK_ID(4)) {
                         globals->characterFlags |= 1 << self->contentsAnimator.frameID;
                         EntityPlayer *player2 = RSDK_GET_ENTITY(SLOT_PLAYER2, Player);
                         if (player2->classID) {
-                            for (int32 s = 0; s < 4; ++s) { //idk about this change. s < 5 WAS s < 3
+                            for (int32 s = 0; s < 4; ++s) {
                                 int32 id = HUD_CharacterIndexFromID(GET_STOCK_ID(1 + s));
                                 if (id < 0) {
                                     globals->stock |= (1 << self->contentsAnimator.frameID) << (8 * s);

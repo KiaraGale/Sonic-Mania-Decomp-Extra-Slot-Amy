@@ -5,7 +5,7 @@
 
 #if MANIA_USE_PLUS
 
-#define UIPOPOVER_OPTION_COUNT (4)
+#define UIPOPOVER_OPTION_COUNT (5)
 
 typedef enum {
     POPOVER_WATCH     = 7,

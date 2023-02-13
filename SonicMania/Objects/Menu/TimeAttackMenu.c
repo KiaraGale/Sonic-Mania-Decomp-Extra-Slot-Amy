@@ -713,6 +713,7 @@ void TimeAttackMenu_LoadScene(void)
         case 3: globals->playerID = ID_KNUCKLES; break;
         case 4: globals->playerID = ID_MIGHTY; break;
         case 5: globals->playerID = ID_RAY; break;
+        case 6: globals->playerID = ID_AMY; break;
         default: break;
     }
 
@@ -814,7 +815,7 @@ void TimeAttackMenu_TAZoneModule_ChoiceChangeCB(void)
     TimeAttackData_ConfigureTableView(param->zoneID, act, param->characterID, TimeAttackMenu->encoreMode);
 
     int32 rowCount = 1;
-    for (int32 rank = 1; rank < 4; ++rank) {
+    for (int32 rank = 1; rank < 5; ++rank) {
         EntityUIRankButton *rankButton = (EntityUIRankButton *)control->buttons[rank];
 
         int32 score    = TimeAttackData_GetScore(param->zoneID, act, param->characterID, TimeAttackMenu->encoreMode, rank);

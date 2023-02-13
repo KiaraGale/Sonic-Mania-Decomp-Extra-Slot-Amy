@@ -615,13 +615,23 @@ bool32 TMZ2Outro_Cutscene_TeamEscape(EntityCutsceneSeq *host)
         player5->playerID = 5;
         Player_ChangeCharacter(player5, ID_RAY);
 
+        EntityPlayer *player6 = RSDK_GET_ENTITY(5, Player);
+        RSDK.CopyEntity(player6, player1, false);
+        player6->playerID = 6;
+        Player_ChangeCharacter(player6, ID_AMY);
+
         SceneInfo->timeEnabled = true;
 
         Player_TryTransform(player1, 0xFF);
+        Player_TryTransform(player2, 0xFF);
+        Player_TryTransform(player3, 0xFF);
+        Player_TryTransform(player4, 0xFF);
+        Player_TryTransform(player5, 0xFF);
+        Player_TryTransform(player6, 0xFF);
         EntitySuperSparkle *sparkle = RSDK_GET_ENTITY(Player->playerCount, SuperSparkle);
         RSDK.ResetEntity(sparkle, SuperSparkle->classID, player1);
 
-        Player->playerCount = 6;
+        Player->playerCount = 5;
         int32 offsetX       = 0;
         for (int32 i = 0; i < Player->playerCount; ++i) {
             if (i != 2) {
@@ -734,6 +744,8 @@ bool32 TMZ2Outro_Cutscene_FinishSequence(EntityCutsceneSeq *host)
                 case ID_MIGHTY: RSDK.SetScene("Videos", "Bad End - Mighty"); break;
 
                 case ID_RAY: RSDK.SetScene("Videos", "Bad End - Ray"); break;
+
+                case ID_AMY: RSDK.SetScene("Videos", "Bad End - Amy"); break;
 #endif
             }
 #if MANIA_USE_PLUS

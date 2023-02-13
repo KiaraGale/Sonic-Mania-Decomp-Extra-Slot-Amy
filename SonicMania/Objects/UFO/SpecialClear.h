@@ -41,6 +41,7 @@ struct ObjectSpecialClear {
     uint16 sfxSpecialWarp;
     uint16 sfxContinue;
     uint16 sfxEmerald;
+    uint16 sfxTimeStone;
 };
 
 // Entity Class

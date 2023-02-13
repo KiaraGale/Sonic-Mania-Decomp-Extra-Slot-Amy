@@ -89,6 +89,7 @@ void ContinueSetup_Create(void *data)
 #if MANIA_USE_PLUS
             case ID_MIGHTY: RSDK.SetSpriteAnimation(ContinuePlayer->aniFrames, CONTPLR_ANI_ICON, &ContinueSetup->animator, true, 3); break;
             case ID_RAY: RSDK.SetSpriteAnimation(ContinuePlayer->aniFrames, CONTPLR_ANI_ICON, &ContinueSetup->animator, true, 4); break;
+            case ID_AMY: RSDK.SetSpriteAnimation(ContinuePlayer->aniFrames, CONTPLR_ANI_IDLE_AMY, &ContinueSetup->animator, true, 5); break;
 #endif
         }
         RSDK.SetActivePalette(1, 0, ScreenInfo->size.y);

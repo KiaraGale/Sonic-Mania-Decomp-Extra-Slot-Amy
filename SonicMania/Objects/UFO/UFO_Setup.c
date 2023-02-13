@@ -76,6 +76,7 @@ void UFO_Setup_StageLoad(void)
     UFO_Setup->sfxBlueSphere = RSDK.GetSfx("Special/BlueSphere2.wav");
     UFO_Setup->sfxSSExit     = RSDK.GetSfx("Special/SSExit.wav");
     UFO_Setup->sfxEmerald    = RSDK.GetSfx("Special/Emerald.wav");
+    UFO_Setup->sfxTimeStone  = RSDK.GetSfx("Special/TimeStone.wav");
     UFO_Setup->sfxEvent      = RSDK.GetSfx("Special/Event.wav");
 
     RSDK.CopyPalette(0, 0, 7, 0, 128);

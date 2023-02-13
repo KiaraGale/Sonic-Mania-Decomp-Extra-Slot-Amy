@@ -31,6 +31,7 @@ struct ObjectUFO_Setup {
     uint16 sfxBlueSphere;
     uint16 sfxSSExit;
     uint16 sfxEmerald;
+    uint16 sfxTimeStone;
     uint16 sfxEvent;
     bool32 resetToTitle;
 };
