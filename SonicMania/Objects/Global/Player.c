@@ -5902,6 +5902,10 @@ void Player_State_AmyHeliHammer_Left(void)
                     else
                         self->abilityValue++;
                 }
+                if (!RSDK.IsSfxPlaying(Player->sfxAmyHammerFly)) {
+                    RSDK.PlaySfx(Player->sfxAmyHammerFly, false, 255);
+                }
+                   
             }
             else {
                 RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
@@ -5967,6 +5971,10 @@ void Player_State_AmyHeliHammer_Right(void)
                     else
                         self->abilityValue++;
                 }
+                if (!RSDK.IsSfxPlaying(Player->sfxAmyHammerFly)) {
+                    RSDK.PlaySfx(Player->sfxAmyHammerFly, false, 255);
+                }
+                
             }
             else {
                 RSDK.SetSpriteAnimation(self->aniFrames, ANI_JUMP, &self->animator, false, 0);
@@ -5988,6 +5996,7 @@ void Player_State_AmyHammer(void)
     RSDK_THIS(Player);
 
     if (self->bPress && (self->onGround = 1) && HammerHitting == false) {
+     
         bool32 HammerHitting = true;
         RSDK.SetSpriteAnimation(self->aniFrames, 49, &self->animator, false, 0);
         self->animator.speed = 10;
@@ -5999,11 +6008,13 @@ void Player_State_AmyHammer(void)
             self->abilitySpeed = -25000;
         self->velocity.x = -25000;
 
-        if (self->animator.frameID == 10) {
+        if (self->animator.frameID == 10) { //Can probably be removed, not sure why it wasn't playing. 
             RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
         }
     }
-
+    if (!RSDK.IsSfxPlaying(Player->sfxAmyHammer)) {
+        RSDK.PlaySfx(Player->sfxAmyHammer, false, 255);
+    }
     if (self->animator.frameID == 12)
         self->state = Player_State_Ground;
 }
